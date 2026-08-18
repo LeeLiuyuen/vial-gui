@@ -45,7 +45,8 @@ jobs:
           ./fetch-emsdk.sh
           ./fetch-deps.sh
           ./build-deps.sh
-          ./src/build.sh
+          cd src
+          ./build.sh
 
       - name: Write SHA-256 manifest
         run: |
