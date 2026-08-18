@@ -26,6 +26,7 @@
   "Lock": "鎖定",
   "Reboot to bootloader": "重新啟動至開機載入程式",
   "About Vial...": "關於 Vial...",
+  "About {}": "關於 {}",
   "About {}...": "關於 {}...",
   "In order to fully apply the theme you should restart the application.": "請重新啟動應用程式以完整套用主題。",
   "Enter an arbitrary keycode": "輸入任意鍵碼",

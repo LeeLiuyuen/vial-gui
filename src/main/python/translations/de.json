@@ -26,6 +26,7 @@
   "Lock": "Sperren",
   "Reboot to bootloader": "In den Bootloader neu starten",
   "About Vial...": "Über Vial...",
+  "About {}": "Über {}",
   "About {}...": "Über {}...",
   "In order to fully apply the theme you should restart the application.": "Starten Sie die Anwendung neu, um das Design vollständig anzuwenden.",
   "Enter an arbitrary keycode": "Beliebigen Tastencode eingeben",

@@ -26,6 +26,7 @@
   "Lock": "잠금",
   "Reboot to bootloader": "부트로더로 재시작",
   "About Vial...": "Vial 정보...",
+  "About {}": "{} 정보",
   "About {}...": "{} 정보...",
   "In order to fully apply the theme you should restart the application.": "테마를 완전히 적용하려면 앱을 다시 시작하세요.",
   "Enter an arbitrary keycode": "임의의 키코드 입력",

@@ -26,6 +26,7 @@
   "Lock": "ロック",
   "Reboot to bootloader": "ブートローダーへ再起動",
   "About Vial...": "Vialについて...",
+  "About {}": "{}について",
   "About {}...": "{}について...",
   "In order to fully apply the theme you should restart the application.": "テーマを完全に適用するにはアプリを再起動してください。",
   "Enter an arbitrary keycode": "任意のキーコードを入力",

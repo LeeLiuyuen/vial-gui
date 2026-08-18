@@ -26,6 +26,7 @@
   "Lock": "Bloquear",
   "Reboot to bootloader": "Reiniciar al gestor de arranque",
   "About Vial...": "Acerca de Vial...",
+  "About {}": "Acerca de {}",
   "About {}...": "Acerca de {}...",
   "In order to fully apply the theme you should restart the application.": "Reinicia la aplicación para aplicar el tema por completo.",
   "Enter an arbitrary keycode": "Introducir un código de tecla arbitrario",
