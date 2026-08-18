@@ -305,6 +305,13 @@ class KeyboardWidget(QWidget):
         self.active_key = None
         self.active_mask = False
 
+    def key_scale_factor(self):
+        """Keep Silicore key geometry stable across locale font metrics."""
+        scale_factor = self.fontMetrics().height()
+        if Theme.get_theme() == "Silicore" and self.font().pointSizeF() > 0:
+            return round(self.font().pointSizeF() * 1.5)
+        return scale_factor
+
     def set_keys(self, keys, encoders):
         self.common_widgets = []
         self.widgets_for_layout = []
@@ -313,7 +320,7 @@ class KeyboardWidget(QWidget):
         self.update_layout()
 
     def add_keys(self, keys):
-        scale_factor = self.fontMetrics().height()
+        scale_factor = self.key_scale_factor()
 
         for key, cls in keys:
             if key.layout_index == -1:
@@ -322,7 +329,7 @@ class KeyboardWidget(QWidget):
                 self.widgets_for_layout.append(cls(key, scale_factor))
 
     def place_widgets(self):
-        scale_factor = self.fontMetrics().height()
+        scale_factor = self.key_scale_factor()
 
         self.widgets = []
 
