@@ -60,6 +60,10 @@ QTabBar::tab {
 }
 QTabBar::tab:selected { background: #2f31e8; color: #ffffff; }
 QTabBar::tab:hover:!selected { background: #24242c; color: #ffffff; }
+QTabBar[vialKeycodeTabs="true"]::tab {
+    min-height: 26px;
+    padding: 5px 12px;
+}
 QPushButton, QToolButton {
     min-height: 32px;
     padding: 6px 14px;
@@ -74,6 +78,16 @@ QSpinBox:focus, QDoubleSpinBox:focus, QTextEdit:focus, QPlainTextEdit:focus {
     border: 2px solid #caff16;
 }
 QPushButton:disabled, QToolButton:disabled { color: #707079; border-color: #303038; background: #121216; }
+QPushButton[vialSquareButton="true"] {
+    min-width: 26px;
+    min-height: 26px;
+    padding: 2px;
+}
+QPushButton[vialKeycodeButton="true"] {
+    min-width: 46px;
+    min-height: 46px;
+    font-size: 8.5pt;
+}
 QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox, QComboBox {
     min-height: 30px;
     padding: 5px 8px;

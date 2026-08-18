@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from PyQt5.QtGui import QPainter, QColor, QPainterPath, QTransform, QBrush, QPolygonF, QPalette
+from PyQt5.QtGui import QPainter, QColor, QPainterPath, QTransform, QBrush, QPolygonF, QPalette, QFont, QFontMetrics
 from PyQt5.QtWidgets import QWidget, QToolTip, QApplication
 from PyQt5.QtCore import Qt, QSize, QRect, QPointF, pyqtSignal, QEvent, QRectF
 
@@ -8,6 +8,33 @@ from constants import KEY_SIZE_RATIO, KEY_SPACING_RATIO, KEYBOARD_WIDGET_PADDING
     KEYBOARD_WIDGET_MASK_HEIGHT, KEY_ROUNDNESS, SHADOW_SIDE_PADDING, SHADOW_TOP_PADDING, SHADOW_BOTTOM_PADDING, \
     KEYBOARD_WIDGET_NONMASK_PADDING
 from themes import Theme
+
+
+def draw_fitted_text(painter, rect, text, font, minimum_point_size=6.5):
+    """Draw a key legend without clipping at the current UI font metrics."""
+    if not text:
+        return
+
+    text_rect = rect.adjusted(2, 1, -2, -1)
+    flags = Qt.AlignCenter | Qt.TextWordWrap
+    fitted_font = QFont(font)
+    point_size = fitted_font.pointSizeF()
+    if point_size <= 0:
+        point_size = float(fitted_font.pixelSize())
+    if "\n" in text:
+        point_size = max(minimum_point_size, point_size * 0.86)
+        fitted_font.setPointSizeF(point_size)
+
+    while point_size > minimum_point_size:
+        metrics = QFontMetrics(fitted_font)
+        bounds = metrics.boundingRect(text_rect, flags, text)
+        if bounds.width() <= text_rect.width() and bounds.height() <= text_rect.height():
+            break
+        point_size = max(minimum_point_size, point_size - 0.5)
+        fitted_font.setPointSizeF(point_size)
+
+    painter.setFont(fitted_font)
+    painter.drawText(text_rect, flags, text)
 
 
 class KeyWidget:
@@ -409,7 +436,8 @@ class KeyboardWidget(QWidget):
         foreground_on_brush.setColor(QApplication.palette().color(QPalette.Highlight).darker(120))
         foreground_on_brush.setStyle(Qt.SolidPattern)
 
-        mask_font = qp.font()
+        regular_font = qp.font()
+        mask_font = QFont(regular_font)
         mask_font.setPointSize(round(mask_font.pointSize() * 0.8))
 
         for idx, key in enumerate(self.widgets):
@@ -446,9 +474,8 @@ class KeyboardWidget(QWidget):
             # draw key text
             if key.masked:
                 # draw the outer legend
-                qp.setFont(mask_font)
                 qp.setPen(key.color if key.color else regular_pen)
-                qp.drawText(key.nonmask_rect, Qt.AlignCenter, key.text)
+                draw_fitted_text(qp, key.nonmask_rect, key.text, mask_font, 6.0)
 
                 # draw the inner highlight rect
                 qp.setPen(active_pen if self.active_key == key and self.active_mask else Qt.NoPen)
@@ -457,11 +484,11 @@ class KeyboardWidget(QWidget):
 
                 # draw the inner legend
                 qp.setPen(key.mask_color if key.mask_color else regular_pen)
-                qp.drawText(key.mask_rect, Qt.AlignCenter, key.mask_text)
+                draw_fitted_text(qp, key.mask_rect, key.mask_text, regular_font, 6.0)
             else:
                 # draw the legend
                 qp.setPen(key.color if key.color else regular_pen)
-                qp.drawText(key.text_rect, Qt.AlignCenter, key.text)
+                draw_fitted_text(qp, key.text_rect, key.text, regular_font)
 
             # draw the extra shape (encoder arrow)
             qp.setPen(extra_pen)

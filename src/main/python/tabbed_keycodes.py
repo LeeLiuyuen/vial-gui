@@ -156,6 +156,7 @@ class FilteredTabbedKeycodes(QTabWidget):
 
     def __init__(self, parent=None, keycode_filter=keycode_filter_any):
         super().__init__(parent)
+        self.tabBar().setProperty("vialKeycodeTabs", True)
 
         self.keycode_filter = keycode_filter
 
@@ -226,6 +227,8 @@ class TabbedKeycodes(QWidget):
         self.is_tray = False
 
         self.layout = QVBoxLayout()
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
 
         self.all_keycodes = FilteredTabbedKeycodes()
         self.basic_keycodes = FilteredTabbedKeycodes(keycode_filter=keycode_filter_masked)

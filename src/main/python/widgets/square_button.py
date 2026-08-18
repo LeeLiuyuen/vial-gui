@@ -8,6 +8,11 @@ class SquareButton(QPushButton):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        # Theme-specific button padding must not consume the square keycap's
+        # text area.  The dynamic property lets QSS target these controls
+        # without weakening regular dialog and toolbar buttons.
+        self.setProperty("vialSquareButton", True)
+        self.setProperty("vialKeycodeButton", False)
         self.scale = 1.2
         self.label = None
         self.word_wrap = False
@@ -15,6 +20,7 @@ class SquareButton(QPushButton):
 
     def setRelSize(self, ratio):
         self.scale = ratio
+        self.setProperty("vialKeycodeButton", ratio >= 3)
         self.updateGeometry()
 
     def setWordWrap(self, state):

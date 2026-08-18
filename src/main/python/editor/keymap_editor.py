@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 import json
 
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QMessageBox, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QMessageBox, QWidget, QSizePolicy
 from PyQt5.QtCore import Qt, pyqtSignal
 
 from any_keycode_dialog import AnyKeycodeDialog
@@ -62,6 +62,12 @@ class KeymapEditor(BasicEditor):
         self.container.anykey.connect(self.on_any_keycode)
 
         self.tabbed_keycodes = TabbedKeycodes()
+        # The keycode tray owns its own scroll areas.  Ignore its large
+        # content-driven size hint so the Web canvas can shrink without
+        # cropping the entire window, while keeping one complete key row
+        # visible at the smallest supported desktop height.
+        self.tabbed_keycodes.setMinimumHeight(98)
+        self.tabbed_keycodes.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Ignored)
         self.tabbed_keycodes.keycode_changed.connect(self.on_keycode_changed)
         self.tabbed_keycodes.anykey.connect(self.on_any_keycode)
 
