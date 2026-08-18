@@ -15,6 +15,7 @@ LOCALES = ("es", "fr", "de", "ko", "ja", "zh-CN", "zh-TW")
 DYNAMIC_MESSAGES = {
     "Keymap", "Layout", "Macros", "Lighting", "Tap Dance", "Combos", "Key Overrides",
     "Alt Repeat Key", "QMK Settings", "Matrix tester", "Firmware updater",
+    "Basic", "ISO/JIS", "Layers", "Quantum", "Backlight", "App, Media and Mouse", "User", "Macro",
 }
 PLACEHOLDER = re.compile(r"\{[^{}]+\}")
 

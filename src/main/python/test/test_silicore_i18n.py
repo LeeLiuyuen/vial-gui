@@ -25,6 +25,20 @@ class SilicoreI18nTest(unittest.TestCase):
         self.assertEqual(translator.translate("MainWindow", "Keymap"), "键位")
         self.assertEqual(translator.translate("MainWindow", "KC_ESC"), "KC_ESC")
 
+    def test_keycode_category_translations(self):
+        translator = SilicoreTranslator("zh-CN")
+        expected = {
+            "Basic": "基础",
+            "Layers": "层",
+            "Quantum": "QMK 功能",
+            "Backlight": "背光",
+            "App, Media and Mouse": "应用、媒体和鼠标",
+            "User": "用户",
+            "Macro": "宏",
+        }
+        for source, translation in expected.items():
+            self.assertEqual(translator.translate("TabbedKeycodes", source), translation)
+
 
 if __name__ == "__main__":
     unittest.main()

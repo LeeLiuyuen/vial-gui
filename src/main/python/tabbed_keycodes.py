@@ -199,7 +199,8 @@ class FilteredTabbedKeycodes(QTabWidget):
             self.keycode_changed.emit(Keycode.normalize(code))
 
     def recreate_keycode_buttons(self):
-        prev_tab = self.tabText(self.currentIndex()) if self.currentIndex() >= 0 else ""
+        current_tab = self.currentWidget()
+        prev_tab = current_tab.label if current_tab is not None else ""
         while self.count() > 0:
             self.removeTab(0)
 
