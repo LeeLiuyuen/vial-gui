@@ -2,6 +2,9 @@
 
 # Docs and getting started
 
+The Silicore web customization is documented in [SILICORE_WEB.md](SILICORE_WEB.md).
+It remains public under the same GPL license and retains the complete upstream history.
+
 ### Please visit [get.vial.today](https://get.vial.today/) to get started with Vial
 
 Vial is an open-source cross-platform (Windows, Linux and Mac) GUI and a QMK fork for configuring your keyboard in real time.

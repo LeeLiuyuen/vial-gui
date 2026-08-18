@@ -1,0 +1,71 @@
+name: Silicore Vial Web
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/silicore-web
+    paths:
+      - "src/main/python/**"
+      - "util/check_silicore_i18n.py"
+      - "util/write_web_manifest.py"
+      - ".github/workflows/silicore-web.yml"
+
+permissions:
+  contents: read
+
+env:
+  VIAL_WEB_COMMIT: 3749f8dabc6d186f9b17cb75eed64e6bf0e23e16
+  VIA_SUPPORT_COMMIT: 3bcf423c970300722a04113de1d20c901b177e42
+
+jobs:
+  build-web:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 330
+    steps:
+      - name: Check out public Silicore fork
+        uses: actions/checkout@v4
+
+      - name: Validate translations and Python syntax
+        run: |
+          python3 util/check_silicore_i18n.py
+          python3 -m compileall -q src/main/python
+
+      - name: Check out pinned Vial Web sources
+        run: |
+          git clone https://github.com/vial-kb/vial-web.git "$RUNNER_TEMP/vial-web"
+          git -C "$RUNNER_TEMP/vial-web" checkout "$VIAL_WEB_COMMIT"
+          git clone https://github.com/vial-kb/via-keymap-precompiled.git "$RUNNER_TEMP/vial-web/via-keymap-precompiled"
+          git -C "$RUNNER_TEMP/vial-web/via-keymap-precompiled" checkout "$VIA_SUPPORT_COMMIT"
+          ln -s "$GITHUB_WORKSPACE" "$RUNNER_TEMP/vial-web/vial-gui"
+
+      - name: Build pinned WebAssembly toolchain and runtime
+        working-directory: ${{ runner.temp }}/vial-web
+        run: |
+          ./fetch-emsdk.sh
+          ./fetch-deps.sh
+          ./build-deps.sh
+          ./src/build.sh
+
+      - name: Write SHA-256 manifest
+        run: |
+          python3 util/write_web_manifest.py \
+            --build-dir "$RUNNER_TEMP/vial-web/src/build" \
+            --vial "$GITHUB_SHA" \
+            --web "$VIAL_WEB_COMMIT" \
+            --support "$VIA_SUPPORT_COMMIT"
+
+      - name: Upload reproducible GPL web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: silicore-vial-web-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/vial-web/src/build/index.html
+            ${{ runner.temp }}/vial-web/src/build/icon.png
+            ${{ runner.temp }}/vial-web/src/build/main-*.js
+            ${{ runner.temp }}/vial-web/src/build/main-*.data
+            ${{ runner.temp }}/vial-web/src/build/main-*.wasm
+            ${{ runner.temp }}/vial-web/src/build/main-*.worker.js
+            ${{ runner.temp }}/vial-web/src/build/silicore-vial-web-manifest.json
+          if-no-files-found: error
+          retention-days: 30

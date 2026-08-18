@@ -2,8 +2,29 @@
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QPalette, QColor
+from silicore_theme import SILICORE_STYLESHEET
 
 themes = [
+    ("Silicore", {
+        QPalette.Window: "#050507",
+        QPalette.WindowText: "#fff7f8fb",
+        QPalette.Base: "#ff111116",
+        QPalette.AlternateBase: "#ff17171d",
+        QPalette.ToolTipBase: "#ffd9dce2",
+        QPalette.ToolTipText: "#ff050507",
+        QPalette.Text: "#fff7f8fb",
+        QPalette.Button: "#ff1b1b21",
+        QPalette.ButtonText: "#fff7f8fb",
+        QPalette.BrightText: "#ffcaff16",
+        QPalette.Link: "#ff58e8f2",
+        QPalette.Highlight: "#ff2f31e8",
+        QPalette.HighlightedText: "#ffffffff",
+        (QPalette.Active, QPalette.Button): "#ff1b1b21",
+        (QPalette.Disabled, QPalette.ButtonText): "#ff707079",
+        (QPalette.Disabled, QPalette.WindowText): "#ff707079",
+        (QPalette.Disabled, QPalette.Text): "#ff707079",
+        (QPalette.Disabled, QPalette.Light): "#ff303038",
+    }),
     ("Light", {
         QPalette.Window: "#ffefebe7",
         QPalette.WindowText: "#ff000000",
@@ -247,6 +268,7 @@ class Theme:
         if theme in palettes:
             QApplication.setPalette(palettes[theme])
             QApplication.setStyle("Fusion")
+            QApplication.instance().setStyleSheet(SILICORE_STYLESHEET if theme == "Silicore" else "")
         # For default/system theme, do nothing
         # User will have to restart the application for it to be applied
 

@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QPla
 
 from protocol.constants import VIAL_PROTOCOL_DYNAMIC, VIAL_PROTOCOL_KEY_OVERRIDE, VIAL_PROTOCOL_ADVANCED_MACROS, \
     VIAL_PROTOCOL_EXT_MACROS, VIAL_PROTOCOL_QMK_SETTINGS
+from util import tr
 
 
 class AboutKeyboard(QDialog):
@@ -62,7 +63,7 @@ class AboutKeyboard(QDialog):
         super().__init__()
 
         self.keyboard = device.keyboard
-        self.setWindowTitle("About {}".format(device.title()))
+        self.setWindowTitle(tr("MenuAbout", "About {}...").format(device.title()))
 
         text = ""
         desc = device.desc
@@ -99,8 +100,7 @@ class AboutKeyboard(QDialog):
 
         text += "QMK Settings: {}\n".format(self.about_qmk_settings())
 
-        font = QFont("monospace")
-        font.setStyleHint(QFont.TypeWriter)
+        font = QFont("IBM Plex Sans")
         self.textarea = QPlainTextEdit()
         self.textarea.setReadOnly(True)
         self.textarea.setFont(font)

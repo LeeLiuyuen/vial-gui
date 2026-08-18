@@ -310,14 +310,14 @@ class MainWindow(QMainWindow):
         try:
             self.autorefresh.select_device(self.combobox_devices.currentIndex())
         except ProtocolError:
-            QMessageBox.warning(self, "", "Unsupported protocol version!\n"
-                                          "Please download latest Vial from https://get.vial.today/")
+            QMessageBox.warning(self, "", tr("MainWindow", "Unsupported protocol version!\n"
+                                          "Please download latest Vial from https://get.vial.today/"))
 
         if isinstance(self.autorefresh.current_device, VialKeyboard):
             keyboard_id = self.autorefresh.current_device.keyboard.keyboard_id
             if (keyboard_id in EXAMPLE_KEYBOARDS) or ((keyboard_id & 0xFFFFFFFFFFFFFF) == EXAMPLE_KEYBOARD_PREFIX):
-                QMessageBox.warning(self, "", "An example keyboard UID was detected.\n"
-                                              "Please change your keyboard UID to be unique before you ship!")
+                QMessageBox.warning(self, "", tr("MainWindow", "An example keyboard UID was detected.\n"
+                                              "Please change your keyboard UID to be unique before you ship!"))
 
         self.rebuild()
         self.refresh_tabs()
@@ -328,7 +328,7 @@ class MainWindow(QMainWindow):
 
         self.about_keyboard_act.setVisible(False)
         if isinstance(self.autorefresh.current_device, VialKeyboard):
-            self.about_keyboard_act.setText("About {}...".format(self.autorefresh.current_device.title()))
+            self.about_keyboard_act.setText(tr("MenuAbout", "About {}...").format(self.autorefresh.current_device.title()))
             self.about_keyboard_act.setVisible(True)
 
         # if unlock process was interrupted, we must finish it first
@@ -414,6 +414,8 @@ class MainWindow(QMainWindow):
         KeycodeDisplay.set_keymap_override(KEYMAPS[index][1])
 
     def get_theme(self):
+        if sys.platform == "emscripten":
+            return "Silicore"
         return self.settings.value("theme", "Dark")
 
     def set_theme(self, theme):

@@ -10,6 +10,8 @@ import sys
 import json
 
 from main_window import MainWindow
+from silicore_i18n import install_translator
+from silicore_theme import install_fonts
 
 
 # http://timlehr.com/python-exception-hooks-with-qt-message-box/
@@ -57,10 +59,9 @@ def web_get_resource(name):
     return "/usr/local/" + name
 
 
-def main(app):
-    font = app.font()
-    font.setPointSize(10)
-    app.setFont(font)
+def main(app, locale="en"):
+    locale = install_translator(app, locale)
+    install_fonts(app, locale)
 
     app.get_resource = web_get_resource
     with open(app.get_resource("build_settings.json"), "r") as inf:
